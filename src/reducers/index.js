@@ -1,4 +1,4 @@
-import { GET_DATA, NAME_GOOGLE, NAME_EMAIL, NAME_LOGOUT, ADD_CREATE, CHOICE_DOC } from '../actions/index'
+import { GET_TODO, NAME_GOOGLE, NAME_EMAIL, NAME_LOGOUT, CHOICE_DOC, ALL_MESSAGE } from '../actions/index'
 // import firebase from "firebase/app"
 
 const reducer = (state, action) => {
@@ -9,13 +9,13 @@ const reducer = (state, action) => {
             return { ...state, name: action.name + "でログインしています。", nameH: action.name };
         case NAME_LOGOUT:
             return { ...state, name: action.name, nameH: [] };
-        case ADD_CREATE:
-            const create = {
-                id: action.id, name: action.name, messages: action.messages
-            };
-            // const id = state.length + 1;
-            // return [...state, { id, ...create }];
-            return { ...state, id: action.id, name: action.name, messages: action.messages }
+        // case ADD_CREATE:
+        //     const create = {
+        //         id: action.id, name: action.name, messages: action.messages
+        //     };
+        //     // const id = state.length + 1;
+        //     // return [...state, { id, ...create }];
+        //     return { ...state, id: action.id, name: action.name, messages: action.messages }
 
 
         case CHOICE_DOC:
@@ -29,9 +29,42 @@ const reducer = (state, action) => {
                 console.log(...state, {
                     id: action.id, firstmessages: action.messages, timestamp: action.timestamp
                 })
-        case GET_DATA:
-            console.log(action.data)
-            return { ...state, messages_data: action.data }
+        case ALL_MESSAGE:
+            // console.log(action.name)
+            // const data = {
+
+            //     id: action.id,
+            //     name: action.name,
+            //     messages: action.messages,
+            //     timestamp: action.timestamp,
+            //     avater: action.avater,
+            //     capital: action.capital
+            // }
+            // const data = (
+
+            //     action.id,
+            //     action.name,
+            //     action.messages,
+            //     action.timestamp,
+            //     action.avater,
+            //     action.capital
+            // )
+            // console.log(data)
+            return { messages: action.data }
+
+        // return {
+        //     // ...state,
+        //     id: action.id,
+        //     name: action.name,
+        //     messages: action.messages,
+        //     timestamp: action.timestamp,
+        //     avater: action.avater,
+        //     capital: action.capital
+        // },
+        //     console.log(state)
+
+
+
 
         default:
             return state

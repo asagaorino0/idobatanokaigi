@@ -13,25 +13,26 @@ const firebaseConfig = {
     appId: process.env.REACT_APP_APP_ID
 };
 
+
 firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
 // const db = firebase.firestore();
-export const messagesRef = db.collection('messages')
+// export const messagesRef = db.collection('messages')
 //create
-export const createData = async () => {
-    await db.collection("users").add({
-        first: "Aaa",
-        last: "Lovelace",
-        born: 2000
-    })
-        .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => {
-            console.error("Error adding document: ", error);
-        })
-}
+// export const createData = async () => {
+//     await db.collection("users").add({
+//         first: "Aaa",
+//         last: "Lovelace",
+//         born: 2000
+//     })
+//         .then((docRef) => {
+//             console.log("Document written with ID: ", docRef.id);
+//         })
+//         .catch((error) => {
+//             console.error("Error adding document: ", error);
+//         })
+// }
 //read
 export const readData = async () => {
     await db.collection("messages").get().then((querySnapshot) => {
@@ -78,20 +79,6 @@ export const readData = async () => {
     //         }
     //     };
 }
-export const choiceData = async () => {
-    var docRef = db.collection("users").doc("ぷろあか");
-
-    docRef.get().then((doc) => {
-        if (doc.exists) {
-            console.log("Document data:", doc.data());
-            console.log(doc.id, " => ", doc.data());//kokoni"state"wotasitemiru
-        } else {
-            console.log("No such document!");
-        }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
-}
 
 export const setData = async () => {
     await
@@ -119,7 +106,7 @@ export const upDate = async () => {
 }
 export const Delete = async () => {
     await
-        db.collection("cities").doc("LA").delete().then(() => {
+        db.collection("messages").doc("LA").delete().then(() => {
             console.log("Document successfully deleted!");
         }).catch((error) => {
             console.error("Error removing document: ", error);
