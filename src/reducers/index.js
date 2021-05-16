@@ -1,4 +1,4 @@
-import { GET_TODO, NAME_GOOGLE, NAME_EMAIL, NAME_LOGOUT, CHOICE_DOC, ALL_MESSAGE } from '../actions/index'
+import { GET_TODO, NAME_GOOGLE, NAME_EMAIL, NAME_LOGOUT, CHOICE_DOC, AVATER_URL } from '../actions/index'
 // import firebase from "firebase/app"
 
 const reducer = (state, action) => {
@@ -29,42 +29,8 @@ const reducer = (state, action) => {
                 console.log(...state, {
                     id: action.id, firstmessages: action.messages, timestamp: action.timestamp
                 })
-        case ALL_MESSAGE:
-            // console.log(action.name)
-            // const data = {
-
-            //     id: action.id,
-            //     name: action.name,
-            //     messages: action.messages,
-            //     timestamp: action.timestamp,
-            //     avater: action.avater,
-            //     capital: action.capital
-            // }
-            // const data = (
-
-            //     action.id,
-            //     action.name,
-            //     action.messages,
-            //     action.timestamp,
-            //     action.avater,
-            //     action.capital
-            // )
-            // console.log(data)
-            return { messages: action.data }
-
-        // return {
-        //     // ...state,
-        //     id: action.id,
-        //     name: action.name,
-        //     messages: action.messages,
-        //     timestamp: action.timestamp,
-        //     avater: action.avater,
-        //     capital: action.capital
-        // },
-        //     console.log(state)
-
-
-
+        case AVATER_URL:
+            return { avater: action.avater }
 
         default:
             return state

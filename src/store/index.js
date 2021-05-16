@@ -1,14 +1,9 @@
 import React, { useReducer, createContext } from 'react'
 import reducer from '../reducers/index'
 const initialState = {
-    data: [],
-    id: [],
     name: [],
-    messages: [],
-    timestamp: 0,
-    avater: [],
-    capital: [],
-    doc: []
+    avater: []
+
 }
 export const Store = createContext({
     globalState: initialState,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router-dom'
@@ -10,7 +10,7 @@ import firebase from "firebase/app"
 import "firebase/firestore";
 import "firebase/auth";
 // import { Table } from '@material-ui/core'
-// import { Store } from '../store/index'
+import { Store } from '../store/index'
 // import { Item } from "./Item";
 import Card from './Card'
 import gravatar from './gravatar'
@@ -30,43 +30,30 @@ const Main = () => {
     const db = firebase.firestore();
     const doc = firebase.firestore();
     // const history = useHistory()
-    const { namae } = useParams();
-    // const { globalState, setGlobalState } = useContext(Store)
-    const [count, setCount] = useState(1);
+    const { name } = useParams();
+    const { avater } = useParams();
+    const { globalState, setGlobalState } = useContext(Store)
+    const [count, setCount] = useState(0);
     const handleCreate = (e) => {
-        // onKeyDown = (e) => {
-        // //e.ke0になる
         if (e.key === 'Enter') {
             // e.preventDefault(),
             ////////////
             db.collection('messages').add({
-                name: (`${namae}`),
+                name: (`${name}`),
                 message: (`${message}`),
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                avater: (avaterUrl),
-                capital: true //←上書きされないおまじない
+                avater: (globalState.avater),
             }, { merge: true }//←上書きされないおまじない
             )
                 .then(() => {
                     console.log("Document successfully written!");
                     setMessage("");
-
-
-                    // setCount(count + 1);
-                    setCount(1);
-                    console.log(count);
                 })
                 .catch((error) => {
                     console.error("Error writing document: ", error);
                 });
-
-
         }
     }
-    // }
-    // }
-
-
     useEffect(() => {
         firebase
             .firestore()
@@ -79,13 +66,11 @@ const Main = () => {
                 setMessages(messages);
             })
     }, []);
-
     console.log(messages)
-    const avaterUrl = 'https://picsum.photos/200?grayscale=' + count * 10
-    console.log(avaterUrl)
+    console.log(globalState.avater)
 
     const handleChoice = async () => {
-        await db.collection("messages").where("name", "==", "うたこ")
+        await db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=0")
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -98,7 +83,7 @@ const Main = () => {
     }
     const handleDelete = async () => {
         await
-            db.collection("messages").where("name", "==", "yumeha")
+            db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=10")
                 .get()
                 .then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
@@ -110,20 +95,19 @@ const Main = () => {
         <div>
             <div>
                 {
-                    messages.map((messages, i) => {
+                    messages.map((messages, timestamp) => {
                         return (
-                            <Card messages={messages} key={i} />
-                            // <Card key={data.timestamp}> {data.name} : {data.message} </Card>
+                            <Card messages={messages} key={timestamp} />
                         )
                     })
                 }
             </div>
 
-            <img src={avaterUrl} alt="" style={{ display: 'flex', flexWrap: 'wrap', borderRadius: '50%' }} />
+            <img src={globalState.avater} alt="" style={{ display: 'flex', flexWrap: 'wrap', borderRadius: '50%', width: '70px', height: '70px' }} />
             <br />
-            {/* return(
+            {/* 
             {gravatar}
-            ), */}
+            */}
             <TextField
                 required
                 id="message"
@@ -136,37 +120,11 @@ const Main = () => {
                 autoFocus={true}
                 value={message}
             />
-            {/* onKeyPress={e =>if (e.key == 'Enter')
-                {
-                      e.preventDefault()
-                      {handleCreate}
-                    }
-                  }
-                /> */}
-
             <br />
-            {/* <Button variant="contained" onClick={handleAdd} color="primary">create</Button> */}
             <Button variant="outlined" onClick={handleChoice}>choice</Button>
             <Button variant="contained" onClick={handleDelete} color="secondary">delete</Button>
-            <br />
-            <br />
-
-            {/* <ul>
-                {messages &&
-
-                    messages.map((message, index) => {
-                        return (
-                            <h5>
-                                {message.name}
-                                {message.messages}
-                                {message.avatar}
-                            </h5>
-                        );
-                    })}
-            </ul> */}
         </div>
 
     );
 };
-
-export default Main;
+export default Main
