@@ -17,7 +17,7 @@ function App() {
       <Switch>
         {/* <Route exact path='/' component={TopPage} />
         <Route exact path='/SecondPage/:name' component={SecondPage} /> */}
-        <Route exact path='/Main/:id' component={Main} />
+        <Route exact path='/Main/:namae' component={Main} />
         {/* <Route exact path='/Header/:nameH' component={Header} /> */}
         <Route exact path='/' component={Login} />
         {/* <Route exact path='/CreateUser/' component={CreateUser} /> */}

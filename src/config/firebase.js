@@ -34,82 +34,82 @@ export const db = firebase.firestore();
 //         })
 // }
 //read
-export const readData = async () => {
-    await db.collection("messages").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            console.log(`${doc.id} `);
-            console.log(`${doc.id} => ${doc.data().name}`);
-            console.log(`${doc.id} => ${doc.data().messages}`);
-            console.log(`${doc.id} => ${doc.data().createAt}`);
-        });
-        querySnapshot.forEach((doc) => {
-            // querySnapshot = (doc) => {
-            return {
-                ...this, id: `${doc.id} `, name: `${doc.data().name}`, message: ` ${doc.data().messages}`, createAt: ` ${doc.data().createAt}`
-            },
-                // return { ...this, id: doc.id, name: doc.name, messages: doc.messages, timestamp: doc.timestamp },
-                console.log(querySnapshot)
-            // };
-        });
-    });
+// export const readData = async () => {
+//     await db.collection("messages").get().then((querySnapshot) => {
+//         querySnapshot.forEach((doc) => {
+//             console.log(`${doc.id} `);
+//             console.log(`${doc.id} => ${doc.data().name}`);
+//             console.log(`${doc.id} => ${doc.data().messages}`);
+//             console.log(`${doc.id} => ${doc.data().createAt}`);
+//         });
+//         querySnapshot.forEach((doc) => {
+//             // querySnapshot = (doc) => {
+//             return {
+//                 ...this, id: `${doc.id} `, name: `${doc.data().name}`, message: ` ${doc.data().messages}`, createAt: ` ${doc.data().createAt}`
+//             },
+//                 // return { ...this, id: doc.id, name: doc.name, messages: doc.messages, timestamp: doc.timestamp },
+//                 console.log(querySnapshot)
+//             // };
+//         });
+//     });
 
-    // class Users {
-    //     constructor(first, last, born) {
-    //         // this.id = id;
-    //         this.first = first;
-    //         this.last = last;
-    //         this.born = born;
-    //     }
-    //     toString() {
-    //         return this.first + ', ' + this.last + ', ' + this.born;
-    //     }
-    // }
-    // // Firestore data converter
-    // var usersConverter = {
-    //     toFirestore: function (users) {
-    //         return {
-    //             first: users.first,
-    //             last: users.last,
-    //             born: users.born
-    //         };
-    //     },
-    //         fromFirestore: function (snapshot, options) {
-    //             const data = snapshot.data(options);
-    //             return new Users(data.first, data.last, data.born);
-    //         }
-    //     };
-}
+// class Users {
+//     constructor(first, last, born) {
+//         // this.id = id;
+//         this.first = first;
+//         this.last = last;
+//         this.born = born;
+//     }
+//     toString() {
+//         return this.first + ', ' + this.last + ', ' + this.born;
+//     }
+// }
+// // Firestore data converter
+// var usersConverter = {
+//     toFirestore: function (users) {
+//         return {
+//             first: users.first,
+//             last: users.last,
+//             born: users.born
+//         };
+//     },
+//         fromFirestore: function (snapshot, options) {
+//             const data = snapshot.data(options);
+//             return new Users(data.first, data.last, data.born);
+//         }
+//     };
+// }
 
-export const setData = async () => {
-    await
-        db.collection("cities").doc("LA").set({
-            name: "LA",
-            state: "CA",
-            country: "USA"
-        })
-            .then(() => {
-                console.log("Document successfully written!");
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
-}
-export const upDate = async () => {
-    await
-        db.collection("cities").doc("LA").update({
-            name: "San Francisco",
-            state: "AA"
-        })
-            .then(() => {
-                console.log("Document successfully updated!");
-            });
-}
-export const Delete = async () => {
-    await
-        db.collection("messages").doc("LA").delete().then(() => {
-            console.log("Document successfully deleted!");
-        }).catch((error) => {
-            console.error("Error removing document: ", error);
-        });
-}
+// export const setData = async () => {
+//     await
+//         db.collection("cities").doc("LA").set({
+//             name: "LA",
+//             state: "CA",
+//             country: "USA"
+//         })
+//             .then(() => {
+//                 console.log("Document successfully written!");
+//             })
+//             .catch((error) => {
+//                 console.error("Error writing document: ", error);
+//             });
+// }
+// export const upDate = async () => {
+//     await
+//         db.collection("cities").doc("LA").update({
+//             name: "San Francisco",
+//             state: "AA"
+//         })
+//             .then(() => {
+//                 console.log("Document successfully updated!");
+//             });
+// }
+// export const Delete = async () => {
+//     await
+//         db.collection("messages").doc("LA").delete().then(() => {
+//             console.log("Document successfully deleted!");
+//         }).catch((error) => {
+//             console.error("Error removing document: ", error);
+//         });
+// }
 export default firebase;
