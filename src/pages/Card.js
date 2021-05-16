@@ -31,7 +31,7 @@ export default function SimpleCard({ messages }) {
         <Card className={classes.root}>
             <CardContent>
                 <Typography >
-                    <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
+                    {/* <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
                 </Typography>
                 <Typography variant="h5" component="h5">
                     {messages.name}

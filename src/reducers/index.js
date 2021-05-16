@@ -9,18 +9,7 @@ const reducer = (state, action) => {
             return { ...state, name: action.name + "でログインしています。", nameH: action.name };
         case NAME_LOGOUT:
             return { ...state, name: action.name, nameH: [] };
-        // case ADD_CREATE:
-        //     const create = {
-        //         id: action.id, name: action.name, messages: action.messages
-        //     };
-        //     // const id = state.length + 1;
-        //     // return [...state, { id, ...create }];
-        //     return { ...state, id: action.id, name: action.name, messages: action.messages }
-
-
         case CHOICE_DOC:
-            // const db = firebase.firestore();
-            // const doc = firebase.firestore();
             return {
                 ...state,
                 id: action.id, firstmessages: action.messages, timestamp: action.timestamp

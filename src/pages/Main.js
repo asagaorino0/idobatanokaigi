@@ -1,25 +1,40 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
+import React, { useEffect, useState, useContext, useRef } from 'react';
+// import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router-dom'
-// import { createData, readData, choiceData, setData, upDate, Delete } from '../config/firebase';
 import TextField from '@material-ui/core/TextField';
-// import reducer from '../reducers/index';
-// import { ALL_MESSAGE, GET_TODO } from '../actions/index'
 import firebase from "firebase/app"
 import "firebase/firestore";
 import "firebase/auth";
-// import { Table } from '@material-ui/core'
 import { Store } from '../store/index'
-// import { Item } from "./Item";
-import Card from './Card'
 import gravatar from './gravatar'
-
-// import { fetchGetTodoData, fetchGetTodoCheck } from '../apis/index'
-
-// import { doc, getDoc } from "firebase/firestore";
+import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 
 const Main = () => {
+
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            flexGrow: 1,
+            overflow: 'hidden',
+            padding: theme.spacing(0, 3),
+        },
+        paper: {
+            maxWidth: 400,
+            margin: `${theme.spacing(1)}px auto`,
+            padding: theme.spacing(2),
+        },
+        root2: {
+            '& .MuiTextField-root': {
+                margin: theme.spacing(1),
+            },
+            flexGrow: 1,
+            overflow: 'hidden',
+        },
+    }));
+
     // const [state, dispatch] = useReducer(reducer, []);
     // const [id, setId] = useState('')
     // const [name, setName] = useState('')
@@ -29,31 +44,37 @@ const Main = () => {
     const [url, setUrl] = useState('');
     const db = firebase.firestore();
     const doc = firebase.firestore();
-    // const history = useHistory()
     const { name } = useParams();
-    const { avater } = useParams();
-    const { globalState, setGlobalState } = useContext(Store)
+    // const { avater } = useParams();
+    const { globalState, setGlobalState } = useContext(Store);
     const [count, setCount] = useState(0);
+
+
     const handleCreate = (e) => {
+
         if (e.key === 'Enter') {
-            // e.preventDefault(),
-            ////////////
-            db.collection('messages').add({
-                name: (`${name}`),
-                message: (`${message}`),
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                avater: (globalState.avater),
-            }, { merge: true }//←上書きされないおまじない
-            )
-                .then(() => {
-                    console.log("Document successfully written!");
-                    setMessage("");
-                })
-                .catch((error) => {
-                    console.error("Error writing document: ", error);
-                });
+            //     // e.preventDefault(),
+            //     ////////////
+            console.log('namae', name)
+
+            //     db.collection('messages').add({
+            //         name: (`${name}`),
+            //         message: (`${message}`),
+            //         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            //         avater: (globalState.avater),
+            //     }
+            //         , { merge: true }//←上書きされないおまじない
+            //     )
+            //         .then(() => {
+            //             console.log("Document successfully written!");
+            //             setMessage("");
+            //         })
+            //         .catch((error) => {
+            //             console.error("Error writing document: ", error);
+            //         });
         }
     }
+
     useEffect(() => {
         firebase
             .firestore()
@@ -68,63 +89,101 @@ const Main = () => {
     }, []);
     console.log(messages)
     console.log(globalState.avater)
+    console.log(name)
 
-    const handleChoice = async () => {
-        await db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=0")
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    console.log(doc.id, " => ", doc.data())
-                })
-            })
-            .catch((error) => {
-                console.log("Error getting documents: ", error);
-            })
-    }
-    const handleDelete = async () => {
-        await
-            db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=10")
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        doc.ref.delete();
-                    })
-                })
-    }
+    // const ref = useRef(null);
+
+    // const handleChoice = async () => {
+    //     await db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=0")
+    //         .get()
+    //         .then((querySnapshot) => {
+    //             querySnapshot.forEach((doc) => {
+    //                 console.log(doc.id, " => ", doc.data())
+    //             })
+    //         })
+    //         .catch((error) => {
+    //             console.log("Error getting documents: ", error);
+    //         })
+    // }
+    // const handleDelete = async () => {
+    //     await
+    //         db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=10")
+    //             .get()
+    //             .then((querySnapshot) => {
+    //                 querySnapshot.forEach((doc) => {
+    //                     doc.ref.delete();
+    //                 })
+    //             })
+    // }
+    const classes = useStyles();
+
     return (
         <div>
-            <div>
-                {
-                    messages.map((messages, timestamp) => {
+            <div className={classes.root}>
+                {messages.length !== 0 &&
+                    messages.map((messages, id) => {
                         return (
-                            <Card messages={messages} key={timestamp} />
+                            <Paper className={classes.paper}>
+                                <Grid container wrap="nowrap" spacing={2}>
+                                    <Grid item key={id}>
+                                        {/* <Avatar>W</Avatar> */}
+                                        <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <Typography variant="h6" component="h6">
+                                            {messages.name}
+                                        </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            {messages.message}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Paper>
                         )
+                        // (
+                        //     <Paper className={classes.paper}>
+                        //         <Grid container wrap="nowrap" spacing={2}>
+                        //             <Grid item key={id}>
+                        //                 {/* <Avatar>W</Avatar> */}
+                        //                 <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
+                        //             </Grid>
+                        //             <Grid item xs>
+                        //                 {/* {ref = { ref }} */}
+                        //                 <Typography variant="h6" component="h6">
+                        //                     {messages.name}
+                        //                 </Typography>
+                        //                 <Typography className={classes.pos} color="textSecondary">
+                        //                     {messages.message}
+                        //                 </Typography>
+                        //             </Grid>
+                        //         </Grid>
+                        //     </Paper>
+                        // )
                     })
-                }
+                };
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                <img src={globalState.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
+                <form className={classes.root2} noValidate autoComplete="off">
+                    <TextField
+                        required
+                        id="message"
+                        label="message!"
+                        defaultValue=""
+                        fullWidth={true}
+                        variant="outlined"
+                        onChange={e => setMessage(e.target.value)}
+                        onKeyDown={handleCreate}
+                        autoFocus={true}
+                        value={message}
+                    />
+                </form>
             </div>
 
-            <img src={globalState.avater} alt="" style={{ display: 'flex', flexWrap: 'wrap', borderRadius: '50%', width: '70px', height: '70px' }} />
-            <br />
-            {/* 
-            {gravatar}
-            */}
-            <TextField
-                required
-                id="message"
-                label="message!"
-                defaultValue=""
-                width="100%"
-                variant="outlined"
-                onChange={e => setMessage(e.target.value)}
-                onKeyDown={handleCreate}
-                autoFocus={true}
-                value={message}
-            />
-            <br />
+            {/* <br />
             <Button variant="outlined" onClick={handleChoice}>choice</Button>
-            <Button variant="contained" onClick={handleDelete} color="secondary">delete</Button>
+            <Button variant="contained" onClick={handleDelete} color="secondary">delete</Button> */}
         </div>
-
     );
 };
 export default Main
