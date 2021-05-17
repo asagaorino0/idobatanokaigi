@@ -18,21 +18,21 @@ const Login = () => {
 
 
     const handleClick = async () => {
-        const date = new Date()
+        // const date = new Date()
         // const Y = date.getFullYear()
         // const M = ("00" + (date.getMonth()+1)).slice(-2)
         // const D = ("00" + date.getDate()).slice(-2)
-        const h = ("00" + date.getHours()).slice(-2)
-        const m = ("00" + date.getMinutes()).slice(-2)
-        const s = ("00" + date.getSeconds()).slice(-2)
-        const no = h + m + s
-        const avater = 'https://picsum.photos/200?=' + no
-        setAvater('https://picsum.photos/200?=' + no);
-        setGlobalState({
-            type: AVATER_URL,
-            avater,
-        });
-        console.log('avatere:', avater)
+        // const h = ("00" + date.getHours()).slice(-2)
+        // const m = ("00" + date.getMinutes()).slice(-2)
+        // const s = ("00" + date.getSeconds()).slice(-2)
+        // const no = h + m + s
+        // const avater = 'https://picsum.photos/200?=' + no
+        // setAvater('https://picsum.photos/200?=' + no);
+        // setGlobalState({
+        //     type: AVATER_URL,
+        //     avater,
+        // });
+        // console.log('avatere:', avater)
         history.push(`/Main/${name}`)
     }
 

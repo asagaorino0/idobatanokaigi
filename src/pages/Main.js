@@ -7,7 +7,8 @@ import "firebase/firestore";
 import "firebase/auth";
 import { Store } from '../store/index'
 import gravatar from './gravatar'
-import Paper from '@material-ui/core/Paper';
+import Paper from './Paper'
+// import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -33,6 +34,10 @@ const Main = () => {
             flexGrow: 1,
             overflow: 'hidden',
         },
+        green: {
+            color: '#fff',
+            backgroundColor: 'green',
+        },
     }));
 
     // const [state, dispatch] = useReducer(reducer, []);
@@ -41,6 +46,7 @@ const Main = () => {
     // const [timestamp, setTimestamp] = useState(0)
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState('');
+    // const [avater, setAvater] = useState('');
     const [url, setUrl] = useState('');
     const db = firebase.firestore();
     const doc = firebase.firestore();
@@ -48,30 +54,32 @@ const Main = () => {
     // const { avater } = useParams();
     const { globalState, setGlobalState } = useContext(Store);
     const [count, setCount] = useState(0);
-
+    const avater = name.charAt(0)
+    // setAvater(avater)
+    console.log('avater:', avater)
 
     const handleCreate = (e) => {
 
         if (e.key === 'Enter') {
             //     // e.preventDefault(),
             //     ////////////
-            console.log('namae', name)
+            // console.log('namae', name)
 
-            //     db.collection('messages').add({
-            //         name: (`${name}`),
-            //         message: (`${message}`),
-            //         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            //         avater: (globalState.avater),
-            //     }
-            //         , { merge: true }//←上書きされないおまじない
-            //     )
-            //         .then(() => {
-            //             console.log("Document successfully written!");
-            //             setMessage("");
-            //         })
-            //         .catch((error) => {
-            //             console.error("Error writing document: ", error);
-            //         });
+            db.collection('messages').add({
+                name: (`${name}`),
+                message: (`${message}`),
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                avater,
+            }
+                , { merge: true }//←上書きされないおまじない
+            )
+                .then(() => {
+                    console.log("Document successfully written!");
+                    setMessage("");
+                })
+                .catch((error) => {
+                    console.error("Error writing document: ", error);
+                });
         }
     }
 
@@ -88,7 +96,7 @@ const Main = () => {
             })
     }, []);
     console.log(messages)
-    console.log(globalState.avater)
+    // console.log(globalState.avater)
     console.log(name)
 
     // const ref = useRef(null);
@@ -123,47 +131,31 @@ const Main = () => {
                 {messages.length !== 0 &&
                     messages.map((messages, id) => {
                         return (
-                            <Paper className={classes.paper}>
-                                <Grid container wrap="nowrap" spacing={2}>
-                                    <Grid item key={id}>
-                                        {/* <Avatar>W</Avatar> */}
-                                        <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Typography variant="h6" component="h6">
-                                            {messages.name}
-                                        </Typography>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                            {messages.message}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </Paper>
+                            <Paper messages={messages} key={id} />
+                            //     <Paper className={classes.paper}>
+                            //         <Grid container wrap="nowrap" spacing={2}>
+                            //             <Grid item key={id}>
+                            //                 <Avatar className={classes.large} >{messages.avater} </Avatar>
+                            //                 {/* <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
+                            //             </Grid>
+                            //             <Grid item xs>
+                            //                 <Typography variant="h6" component="h6">
+                            //                     {messages.name}
+                            //                 </Typography>
+                            //                 <Typography className={classes.pos} color="textSecondary">
+                            //                     {messages.message}
+                            //                 </Typography>
+                            //             </Grid>
+                            //         </Grid>
+                            //     </Paper>
+                            // )
                         )
-                        // (
-                        //     <Paper className={classes.paper}>
-                        //         <Grid container wrap="nowrap" spacing={2}>
-                        //             <Grid item key={id}>
-                        //                 {/* <Avatar>W</Avatar> */}
-                        //                 <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
-                        //             </Grid>
-                        //             <Grid item xs>
-                        //                 {/* {ref = { ref }} */}
-                        //                 <Typography variant="h6" component="h6">
-                        //                     {messages.name}
-                        //                 </Typography>
-                        //                 <Typography className={classes.pos} color="textSecondary">
-                        //                     {messages.message}
-                        //                 </Typography>
-                        //             </Grid>
-                        //         </Grid>
-                        //     </Paper>
-                        // )
                     })
-                };
+                }
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                <img src={globalState.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} />
+                <Avatar className={classes.green} >{avater}</Avatar>
+                {/* <img src={globalState.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
                 <form className={classes.root2} noValidate autoComplete="off">
                     <TextField
                         required
