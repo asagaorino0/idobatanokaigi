@@ -2,8 +2,8 @@ import React, { useReducer, createContext } from 'react'
 import reducer from '../reducers/index'
 const initialState = {
     name: [],
-    avater: []
-
+    avater: [],
+    message: []
 }
 export const Store = createContext({
     globalState: initialState,

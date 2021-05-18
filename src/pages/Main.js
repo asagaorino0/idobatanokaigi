@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useContext, useRef } from 'react';
 // import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router-dom'
@@ -44,6 +45,7 @@ const Main = () => {
     // const [id, setId] = useState('')
     // const [name, setName] = useState('')
     // const [timestamp, setTimestamp] = useState(0)
+    const messageEndRef = React.useRef();
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState('');
     // const [avater, setAvater] = useState('');
@@ -59,29 +61,29 @@ const Main = () => {
     console.log('avater:', avater)
 
     const handleCreate = (e) => {
-
         if (e.key === 'Enter') {
-            //     // e.preventDefault(),
+            // e.preventDefault(),
             //     ////////////
             // console.log('namae', name)
-
             db.collection('messages').add({
-                name: (`${name}`),
-                message: (`${message}`),
+                name,
+                message,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                 avater,
             }
-                , { merge: true }//←上書きされないおまじない
+                // , { merge: true }//←上書きされないおまじない
             )
                 .then(() => {
                     console.log("Document successfully written!");
-                    setMessage("");
+                    // setMessage("");
                 })
                 .catch((error) => {
                     console.error("Error writing document: ", error);
                 });
         }
-    }
+        // const scrollToLatest = () => 
+        // messageEndRef.current.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" })
+    };
 
     useEffect(() => {
         firebase
@@ -97,9 +99,10 @@ const Main = () => {
     }, []);
     console.log(messages)
     // console.log(globalState.avater)
-    console.log(name)
+    // console.log(name)
 
-    // const ref = useRef(null);
+
+
 
     // const handleChoice = async () => {
     //     await db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=0")
@@ -113,20 +116,22 @@ const Main = () => {
     //             console.log("Error getting documents: ", error);
     //         })
     // }
-    // const handleDelete = async () => {
-    //     await
-    //         db.collection("messages").where("avater", "==", "https://picsum.photos/200?grayscale=10")
-    //             .get()
-    //             .then((querySnapshot) => {
-    //                 querySnapshot.forEach((doc) => {
-    //                     doc.ref.delete();
-    //                 })
-    //             })
-    // }
+    const handleDelete = async () => {
+        await
+            db.collection("messages").where("name", "==", "mama")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        doc.ref.delete();
+                    })
+                })
+    }
     const classes = useStyles();
 
     return (
+
         <div>
+            <button onClick={handleCreate}>choice</button>
             <div className={classes.root}>
                 {messages.length !== 0 &&
                     messages.map((messages, id) => {
@@ -153,6 +158,12 @@ const Main = () => {
                     })
                 }
             </div>
+            <div
+                style={{ float: "left", clear: "both" }}
+                ref={messageEndRef}
+            // ref={ref}
+            //   {messages.name}
+            />
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 <Avatar className={classes.green} >{avater}</Avatar>
                 {/* <img src={globalState.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
@@ -161,7 +172,7 @@ const Main = () => {
                         required
                         id="message"
                         label="message!"
-                        defaultValue=""
+                        defaultValue="message"
                         fullWidth={true}
                         variant="outlined"
                         onChange={e => setMessage(e.target.value)}
@@ -172,10 +183,10 @@ const Main = () => {
                 </form>
             </div>
 
-            {/* <br />
-            <Button variant="outlined" onClick={handleChoice}>choice</Button>
-            <Button variant="contained" onClick={handleDelete} color="secondary">delete</Button> */}
+            <br />
+            {/* <button onClick={handleChoice}>choice</button> */}
+            <button onClick={handleDelete} color="secondary">delete</button>
         </div>
     );
 };
-export default Main
+export default Main;

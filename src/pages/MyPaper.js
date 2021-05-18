@@ -15,7 +15,7 @@ const useStyles = makeStyles({
     },
     paper: {
         maxWidth: 400,
-        margin: '5px 0px 5px 0px ',
+        margin: '5px 0px 5px auto',
         padding: '16px',
         boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
     },
@@ -39,7 +39,7 @@ export default function SimplePaper({ messages }) {
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
-                    <Avatar className={classes.pink}  >{messages.avater} </Avatar>
+                    <Avatar className={classes.green}  >{messages.avater} </Avatar>
                     {/* <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
                 </Grid>
                 <Grid item xs>
