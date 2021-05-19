@@ -167,21 +167,21 @@ const Main = () => {
                 <Avatar className={classes.green} >{avater}</Avatar>
                 {/* <img src={globalState.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
                 {/* <form className={classes.root} noValidate autoComplete="off">    */}
-                <form>
 
-                    <TextField
-                        // required
-                        id="standard-basic"
-                        label="message!"
-                        defaultValue=""
-                        fullWidth={true}
-                        // ref={messageEndRef}
-                        onChange={e => setMessage(e.target.value)}
-                        onKeyDown={handleCreate}
-                        autoFocus={true}
-                        value={message}
-                    />
-                </form>
+
+                <TextField
+                    // required
+                    id="standard-basic"
+                    label="message!"
+                    defaultValue=""
+                    fullWidth={true}
+                    // ref={messageEndRef}
+                    onChange={e => setMessage(e.target.value)}
+                    onKeyDown={handleCreate}
+                    autoFocus={true}
+                    value={message}
+                />
+
             </div>
             <br />
             <button onClick={handleDelete} color="secondary">{name}</button>
