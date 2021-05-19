@@ -1,9 +1,10 @@
 import React, { useReducer, createContext } from 'react'
 import reducer from '../reducers/index'
 const initialState = {
-    name: [],
-    avater: [],
-    message: []
+    // name: "",
+    // avater: "",
+    message: "",
+    messages: [],
 }
 export const Store = createContext({
     globalState: initialState,

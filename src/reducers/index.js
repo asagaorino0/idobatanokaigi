@@ -13,7 +13,7 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 id: action.id, firstmessages: action.messages, timestamp: action.timestamp
-
+                // eslint-disable-next-line 
             },
                 console.log(...state, {
                     id: action.id, firstmessages: action.messages, timestamp: action.timestamp
