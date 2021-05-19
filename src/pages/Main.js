@@ -6,8 +6,9 @@ import "firebase/firestore";
 import "firebase/auth";
 import { Store } from '../store/index';
 import gravatar from './gravatar';
-// import Paper from './Paper'
-import Paper from '@material-ui/core/Paper';
+import Paper from './Paper'
+import MyPaper from './MyPaper'
+// import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -90,12 +91,13 @@ const Main = () => {
                 setMessages(messages);
             })
     }, []
-        // eslint-disable-next-line 
     );
     console.log(messages)
+
     const messageEndRef = React.useRef();
     const scrollToLatest = () =>
         messageEndRef.current.scrollIntoView({ behavior: "auto", block: "start", inline: "center" });
+
     // console.log(globalState.avater)
     // console.log(name)
 
@@ -117,57 +119,45 @@ const Main = () => {
         <div>
             <button onClick={scrollToLatest}>goto</button>
             <div className={classes.root}>
+                {/* { */}
                 {messages.length !== 0 &&
                     messages.map((messages, index) => {
-                        return (
-                            // return messages.length === index + 1 ? (
-                            // <Paper messages={messages} key={index} />
+                        if (name === messages.name)
+                            return (
+                                <MyPaper messages={messages} key={`${messages.id} `} />
+                            )
+                        else {
+                            return (
+                                <Paper messages={messages} key={`${messages.id} `} />
+                            )
+                        }
+                    })
+                }
 
-                            <Paper className={classes.paper}>
-                                <Grid container wrap="nowrap" spacing={2}>
+                {/* 
+                // return messages.length === index + 1 ? (
 
-                                    <Grid item key={`${messages.id} `}>
-                                        <Avatar className={classes.large} >   {`${messages.avater} `} </Avatar>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Typography variant="h6" component="h6">
-                                            {`${messages.name} `}
-                                        </Typography>
-                                        <Typography className={classes.pos} color="textSecondary">
-                                            {`${messages.message}`}
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </Paper>
-
-                        )
-                        // ) : (
-                        // <Paper messages={messages} key={index}
 
                         //     <Paper className={classes.paper}>
-                        //         <Grid container wrap="nowrap" spacing={2}>
+                    //         <Grid container wrap="nowrap" spacing={2}>
+
                         //             <Grid item key={`${messages.id} `}>
-                        //                 <Avatar className={classes.large}
-                        //                     ref={messageEndRef}
-                        //                 >
-                        //                     {`${messages.avater} `}
-                        //                 </Avatar>
+                            //                 <Avatar className={classes.large} >   {`${messages.avater} `} </Avatar>
                         //             </Grid>
                         //             <Grid item xs>
-                        //                 <Typography variant="h6" component="h6">
-                        //                     {`${messages.name} `}
+                            //                 <Typography variant="h6" component="h6">
+                                //                     {`${messages.name} `}
                         //                 </Typography>
                         //                 <Typography className={classes.pos} color="textSecondary">
-                        //                     {`${messages.message}`}
+                                //                     {`${messages.message}`}
                         //                 </Typography>
                         //             </Grid>
                         //         </Grid>
-                        //     </Paper>
-                        // )
+                        //     </Paper> */}
 
+                {/* )
                     })
-
-                }
+                } */}
             </div>
             <div
                 style={{ float: "left", clear: "both" }}
