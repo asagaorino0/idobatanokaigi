@@ -13,6 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 const Main = () => {
 
@@ -66,16 +68,20 @@ const Main = () => {
                     message,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     avater,
-                }
-                    , { merge: true }//←上書きされないおまじない
-                )
-                    .then(() => {
-                        console.log("Document successfully written!");
+                })
+                    .then((docref) => {
+                        console.log("Document successfully written!:", docref.id);
                         setMessage("");
+
+                        db.collection("messages").doc(docref.id).set({
+                            id: docref.id,
+                            capital: true //←上書きされないおまじない
+                        }, { merge: true }//←上書きされないおまじない
+                        )
                     })
                     .catch((error) => {
                         console.error("Error writing document: ", error);
-                    });
+                    })
         }
     };
 
@@ -86,17 +92,18 @@ const Main = () => {
             .orderBy("timestamp")
             .onSnapshot((snapshot) => {
                 const messages = snapshot.docs.map((doc) => {
-                    return doc.data();
+                    return doc.id && doc.data()
                 });
                 setMessages(messages);
             })
     }, []
+
     );
     console.log(messages)
-
+    console.log(doc.id)
     const messageEndRef = React.useRef();
     const scrollToLatest = () =>
-        messageEndRef.current.scrollIntoView({ behavior: "auto", block: "start", inline: "center" });
+        messageEndRef.current.scrollIntoView({ behavior: "auto", block: "start", inline: "center" })
 
     // console.log(globalState.avater)
     // console.log(name)
@@ -112,14 +119,46 @@ const Main = () => {
                     })
                 })
     };
+    const deleteId = async () => {
+        console.log(messages.id)
+        // await
+        // db.collection("messages").doc(id).delete()
+
+        //         db.collection("messages").where("id", "==", messages.id)
+        //             .get()
+        //             .then((querySnapshot) => {
+        //                 querySnapshot.forEach((doc) => {
+        //                     doc.ref.delete();
+        //                 })
+        //             })
+    };
     const classes = useStyles();
+
 
     return (
 
         <div>
             <button onClick={scrollToLatest}>goto</button>
             <div className={classes.root}>
-                {/* { */}
+                {messages.length !== 0 &&
+                    messages.map((messages, index) => {
+                        // { `${messages.id} ` }
+                        < DeleteIcon color="secondary" onClick={deleteId} />
+                        if (name === messages.name)
+                            return (
+                                <MyPaper messages={messages} key={`${messages.id} `} />
+
+                            )
+                        else {
+                            return (
+                                <Paper messages={messages} key={`${messages.id} `} />
+                            )
+                        }
+
+                    })
+                }
+            </div>
+            {/* <div className={classes.root}>
                 {messages.length !== 0 &&
                     messages.map((messages, index) => {
                         if (name === messages.name)
@@ -133,49 +172,20 @@ const Main = () => {
                         }
                     })
                 }
-
-                {/* 
-                // return messages.length === index + 1 ? (
+            </div> */}
 
 
-                        //     <Paper className={classes.paper}>
-                    //         <Grid container wrap="nowrap" spacing={2}>
 
-                        //             <Grid item key={`${messages.id} `}>
-                            //                 <Avatar className={classes.large} >   {`${messages.avater} `} </Avatar>
-                        //             </Grid>
-                        //             <Grid item xs>
-                            //                 <Typography variant="h6" component="h6">
-                                //                     {`${messages.name} `}
-                        //                 </Typography>
-                        //                 <Typography className={classes.pos} color="textSecondary">
-                                //                     {`${messages.message}`}
-                        //                 </Typography>
-                        //             </Grid>
-                        //         </Grid>
-                        //     </Paper> */}
 
-                {/* )
-                    })
-                } */}
-            </div>
-            <div
-                style={{ float: "left", clear: "both" }}
-                ref={messageEndRef}
-            />
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 <Avatar className={classes.green} >{avater}</Avatar>
-                {/* <img src={globalState.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
-                {/* <form className={classes.root} noValidate autoComplete="off">    */}
-
-
                 <TextField
                     // required
                     id="standard-basic"
                     label="message!"
                     defaultValue=""
                     fullWidth={true}
-                    // ref={messageEndRef}
+                    ref={messageEndRef}
                     onChange={e => setMessage(e.target.value)}
                     onKeyDown={handleCreate}
                     autoFocus={true}
@@ -185,7 +195,7 @@ const Main = () => {
             </div>
             <br />
             <button onClick={handleDelete} color="secondary">{name}</button>
-            <button onClick={handleCreate} color="secondary">{message}</button>        </div>
+            <button onClick={deleteId} color="secondary">id</button>        </div>
     );
 };
 export default Main;

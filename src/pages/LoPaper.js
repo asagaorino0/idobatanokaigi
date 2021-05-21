@@ -4,9 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import DeleteIcon from '@material-ui/icons/Delete';
-import firebase from "firebase/app"
-import { deleteId } from './Main';
 
 const useStyles = makeStyles({
     //    const useStyles = makeStyles((theme) => ({
@@ -18,7 +15,7 @@ const useStyles = makeStyles({
     },
     paper: {
         maxWidth: 400,
-        margin: '5px 0px 5px auto',
+        margin: '5px 0px 5px 0px ',
         padding: '16px',
         boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
     },
@@ -37,30 +34,12 @@ const useStyles = makeStyles({
 
 export default function SimplePaper({ messages }) {
     const classes = useStyles();
-    // const handleDelete = async () => {
-    //     await deleteId();
-    // }
-    const db = firebase.firestore();
-    const doc = firebase.firestore();
-    const deleteId = async () => {
-        console.log('messages:', doc.id)
-        await
-            db.collection("messages").doc(`${messages.id}`).delete()
-        // db.collection("messages").where("id", "==", messages.id)
-        //     .get()
-        //     .then((querySnapshot) => {
-        //         querySnapshot.forEach((doc) => {
-        //             doc.ref.delete();
-        //         })
-
-        //     })
-    };
 
     return (
         <Paper className={classes.paper}>
-            <Grid container wrap="nowrap" spacing={3}>
+            <Grid container wrap="nowrap" spacing={2}>
                 <Grid item>
-                    <Avatar className={classes.green}  >{messages.avater} </Avatar>
+                    <Avatar className={classes.pink}  >{messages.avater} </Avatar>
                     {/* <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
                 </Grid>
                 <Grid item xs>
@@ -71,10 +50,6 @@ export default function SimplePaper({ messages }) {
                         {messages.message}
                     </Typography>
                 </Grid>
-                {/* <Grid item xs> */}
-                {/* {messages.id} */}
-                <DeleteIcon onClick={deleteId} />
-                {/* </Grid> */}
             </Grid>
         </Paper>
     );

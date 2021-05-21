@@ -17,6 +17,18 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export const db = firebase.firestore();
+// const deleteId = async () => {
+//     console.log(messages.id)
+//     await
+//         db.collection("messages").doc(id).delete()
+//     // db.collection("messages").where("id", "==", messages.id)
+//     //     .get()
+//     //     .then((querySnapshot) => {
+//     //         querySnapshot.forEach((doc) => {
+//     //             doc.ref.delete();
+//     //         })
+//     //     })
+// };
 // const db = firebase.firestore();
 // export const messagesRef = db.collection('messages')
 //create
