@@ -4,16 +4,20 @@ import TextField from '@material-ui/core/TextField';
 import firebase from "firebase/app"
 import "firebase/firestore";
 import "firebase/auth";
-import { Store } from '../store/index';
-import gravatar from './gravatar';
+// import { Store } from '../store/index';
+// import gravatar from './gravatar';
 import Paper from './Paper'
 import MyPaper from './MyPaper'
+import StarPaper from './StarPaper'
+import MyStarPaper from './MyStarPaper'
 // import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import DeleteIcon from '@material-ui/icons/Delete';
+// import Typography from '@material-ui/core/Typography';
+// import DeleteIcon from '@material-ui/icons/Delete';
+// import StarIcon from '@material-ui/icons/Star';
+// import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 
 const Main = () => {
@@ -44,30 +48,19 @@ const Main = () => {
     }));
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState('');
-    const [url, setUrl] = useState('');
     const db = firebase.firestore();
     const doc = firebase.firestore();
     const { name } = useParams();
-    const { globalState, setGlobalState } = useContext(Store);
-    const [count, setCount] = useState(0);
     const avater = name.charAt(0);
-
-    // const ref = useRef<HTMLDivElement>(null);
-
-
-
     const handleCreate = async (e) => {
         if (e.key === 'Enter') {
-            // e.preventDefault(),
-            //     ////////////
-            // console.log('namae', name)
-            // console.log(message)
             await
                 db.collection('messages').add({
                     name,
                     message,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     avater,
+                    stare: "0",
                 })
                     .then((docref) => {
                         console.log("Document successfully written!:", docref.id);
@@ -75,7 +68,7 @@ const Main = () => {
 
                         db.collection("messages").doc(docref.id).set({
                             id: docref.id,
-                            capital: true //←上書きされないおまじない
+                            // capital: true //←上書きされないおまじない
                         }, { merge: true }//←上書きされないおまじない
                         )
                     })
@@ -97,18 +90,15 @@ const Main = () => {
                 setMessages(messages);
             })
     }, []
-
     );
-    console.log(messages)
-    console.log(doc.id)
+    // console.log(messages)
+    // console.log(doc.id)
     const messageEndRef = React.useRef();
     const scrollToLatest = () =>
         messageEndRef.current.scrollIntoView({ behavior: "auto", block: "start", inline: "center" })
-
-    // console.log(globalState.avater)
-    // console.log(name)
-
-
+    const sterId = async () => {
+        console.log('messages:', doc.id)
+    };
     const handleDelete = async () => {
         await
             db.collection("messages").where("name", "==", name)
@@ -119,64 +109,58 @@ const Main = () => {
                     })
                 })
     };
-    const deleteId = async () => {
-        console.log(messages.id)
-        // await
-        // db.collection("messages").doc(id).delete()
-
-        //         db.collection("messages").where("id", "==", messages.id)
-        //             .get()
-        //             .then((querySnapshot) => {
-        //                 querySnapshot.forEach((doc) => {
-        //                     doc.ref.delete();
-        //                 })
-        //             })
-    };
+    const handleSet = async () => {
+        await
+            db.collection("messages").where("message", "==", "デザインも頑張ってください！")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        doc.ref.set({
+                            star: 0,
+                            id: "Lfcwyl069adcFaAxRxtC",
+                        }, { merge: true }//←上書きされないおまじない
+                        )
+                            .then(() => {
+                                console.log("Document successfully written!");
+                            })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                            });
+                    })
+                })
+    }
     const classes = useStyles();
 
 
     return (
-
         <div>
             <button onClick={scrollToLatest}>goto</button>
             <div className={classes.root}>
                 {messages.length !== 0 &&
                     messages.map((messages, index) => {
-                        // { `${messages.id} ` }
-                        < DeleteIcon color="secondary" onClick={deleteId} />
-                        if (name === messages.name)
+                        if (name === messages.name) {
+                            if (messages.star > 0)
+                                return (
+                                    <MyStarPaper messages={messages} key={`${messages.id} `} />
+                                )
+                            else {
+                                return (
+                                    <MyPaper messages={messages} key={`${messages.id} `} />
+                                )
+                            }
+                        }
+                        else if (messages.star > 0)
                             return (
-                                <MyPaper messages={messages} key={`${messages.id} `} />
-
+                                <StarPaper messages={messages} key={`${messages.id} `} />
                             )
                         else {
                             return (
                                 <Paper messages={messages} key={`${messages.id} `} />
                             )
                         }
-
                     })
                 }
             </div>
-            {/* <div className={classes.root}>
-                {messages.length !== 0 &&
-                    messages.map((messages, index) => {
-                        if (name === messages.name)
-                            return (
-                                <MyPaper messages={messages} key={`${messages.id} `} />
-                            )
-                        else {
-                            return (
-                                <Paper messages={messages} key={`${messages.id} `} />
-                            )
-                        }
-                    })
-                }
-            </div> */}
-
-
-
-
             <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 <Avatar className={classes.green} >{avater}</Avatar>
                 <TextField
@@ -191,11 +175,11 @@ const Main = () => {
                     autoFocus={true}
                     value={message}
                 />
-
             </div>
             <br />
             <button onClick={handleDelete} color="secondary">{name}</button>
-            <button onClick={deleteId} color="secondary">id</button>        </div>
+            {/* <button onClick={handleSet} color="secondary">set</button> */}
+        </div>
     );
 };
 export default Main;

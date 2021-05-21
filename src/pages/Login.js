@@ -1,19 +1,19 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 // import reducer from '../reducers/index';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../config/firebase'
 // import { NAME_GOOGLE, AVATER_URL, NAME_LOGOUT } from '../actions/index'
-import { Store } from '../store/index'
-import { AVATER_URL } from '../actions/index'
+// import { Store } from '../store/index'
+// import { AVATER_URL } from '../actions/index'
 const Login = () => {
     // const [state, dispatch] = useReducer(reducer, []);
     const [name, setName] = useState('')
-    const [error, setError] = useState('')
+    const [error] = useState('')
     const history = useHistory()
-    const { globalState, setGlobalState } = useContext(Store)
-    const [avater, setAvater] = useState(0)
+    // const { globalState, setGlobalState } = useContext(Store)
+    // const [avater, setAvater] = useState(0)
     // const db = firebase.firestore();
 
 

@@ -4,6 +4,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
+import firebase from "firebase/app"
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 
 const useStyles = makeStyles({
     //    const useStyles = makeStyles((theme) => ({
@@ -27,6 +30,10 @@ const useStyles = makeStyles({
         color: '#fff',
         backgroundColor: 'green',
     },
+    yellow: {
+        color: 'yelloW',
+        // backgroundColor: 'yelloW',
+    },
     pos: {
         marginBottom: 10,
     },
@@ -34,6 +41,22 @@ const useStyles = makeStyles({
 
 export default function SimplePaper({ messages }) {
     const classes = useStyles();
+    const db = firebase.firestore();
+    const doc = firebase.firestore();
+    const deleteId = async () => {
+        console.log('messages:', doc.id)
+        await
+            db.collection("messages").doc(`${messages.id}`).delete()
+    };
+    const starId = async () => {
+        console.log('id:', messages.id)
+        await
+            db.collection("messages").doc(messages.id).set({
+                star: 1,
+            }, { merge: true }//←上書きされないおまじない
+            )
+        console.log('srar:', messages.star)
+    };
 
     return (
         <Paper className={classes.paper}>
@@ -50,6 +73,8 @@ export default function SimplePaper({ messages }) {
                         {messages.message}
                     </Typography>
                 </Grid>
+                {/* <DeleteIcon color="action" onClick={deleteId} fontSize="large" /> */}
+                <StarBorderIcon className={classes.yellow} onClick={starId} />
             </Grid>
         </Paper>
     );

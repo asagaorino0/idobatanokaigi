@@ -6,9 +6,9 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import DeleteIcon from '@material-ui/icons/Delete';
 import firebase from "firebase/app"
-// import StarIcon from '@material-ui/icons/Star';
+import StarIcon from '@material-ui/icons/Star';
 // import StarBorderIcon from '@material-ui/icons/StarBorder';
-// import Badge from '@material-ui/core/Badge';
+import Badge from '@material-ui/core/Badge';
 
 
 const useStyles = makeStyles({
@@ -33,8 +33,9 @@ const useStyles = makeStyles({
         backgroundColor: 'green',
     },
     yellow: {
-        color: 'yelloW',
-        // backgroundColor: 'yelloW',
+        // color: 'yelloW',
+        color: '#fff',
+        backgroundColor: 'yelloW',
     },
     pos: {
         marginBottom: 10,
@@ -50,22 +51,22 @@ export default function SimplePaper({ messages }) {
         await
             db.collection("messages").doc(`${messages.id}`).delete()
     };
-    // const starId = async () => {
-    //     console.log('id:', messages.id)
-    //     await
-    //         db.collection("messages").doc(messages.id).set({
-    //             star: 1,
-    //         }, { merge: true }//←上書きされないおまじない
-    //         )
-    //     console.log('srar:', messages.star)
-    // };
+    const starId = async () => {
+        console.log('id:', messages.id)
+        await
+            db.collection("messages").doc(messages.id).set({
+                star: 1,
+            }, { merge: true }//←上書きされないおまじない
+            )
+        console.log('srar:', messages.star)
+    };
 
     return (
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={3}>
                 <Grid item>
                     <Avatar className={classes.green}  >{messages.avater} </Avatar>
-                    {/* <DeleteIcon color="disabled" onClick={deleteId} /> */}
+                    <DeleteIcon color="disabled" onClick={deleteId} />
                 </Grid>
                 <Grid item xs>
                     <Typography variant="h6" component="h6">
@@ -75,7 +76,11 @@ export default function SimplePaper({ messages }) {
                         {messages.message}
                     </Typography>
                 </Grid>
+                <StarIcon className={classes.yellow} />
+                <Badge badgeContent={messages.star} />
+                {/* <Badge color="Secondary" badgeContent={messages.star} /> */}
             </Grid>
         </Paper>
     );
+
 }

@@ -1,5 +1,4 @@
-import { GET_TODO, NAME_GOOGLE, NAME_EMAIL, NAME_LOGOUT, CHOICE_DOC, AVATER_URL } from '../actions/index'
-// import firebase from "firebase/app"
+import { NAME_GOOGLE, NAME_EMAIL, NAME_LOGOUT, CHOICE_DOC, AVATER_URL } from '../actions/index'
 
 const reducer = (state, action) => {
     switch (action.type) {
