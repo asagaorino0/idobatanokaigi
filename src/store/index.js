@@ -5,6 +5,8 @@ const initialState = {
     message: "",
     messages: [],
     count: 1,
+    star: 0,
+    avaterGoogle: ""
 }
 export const Store = createContext({
     globalState: initialState,

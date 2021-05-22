@@ -1,7 +1,2 @@
-export const ADD_EVENT = 'ADD_EVENT'
-export const GET_TODO = 'GET_TODO'
 export const NAME_GOOGLE = 'NAME_GOOGLE'
-export const NAME_EMAIL = 'NAME_EMAIL'
-export const NAME_LOGOUT = 'NAME_LOGOUT'
-export const AVATER_URL = 'AVATER_URL'
-export const CHOICE_DOC = 'CHOICE_DOC'
+export const RESET_GOOGLE = ' RESET_GOOGLE'

@@ -64,9 +64,16 @@ export default function SimplePaper({ messages }) {
     return (
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={3}>
-                <Grid item>
-                    <Avatar className={classes.pink}  >{messages.avater} </Avatar>
-                </Grid>
+                {messages.avaterUrl === "0" &&
+                    <Grid item>
+                        <Avatar className={classes.pink}  >{messages.avater} </Avatar>
+                    </Grid>
+                }
+                {messages.avaterUrl !== "0" &&
+                    <Grid item>
+                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} />
+                    </Grid>
+                }
                 <Grid item xs>
                     <Typography variant="h6" component="h6">
                         {messages.name}
@@ -75,7 +82,7 @@ export default function SimplePaper({ messages }) {
                         {messages.message}
                     </Typography>
                 </Grid>
-                <StarIcon className={classes.yellow} />
+                <StarIcon className={classes.yellow} onClick={starId} />
                 <Badge badgeContent={messages.star} />
             </Grid>
         </Paper>

@@ -51,20 +51,27 @@ export default function SimplePaper({ messages }) {
     const starId = async () => {
         console.log('id:', messages.id)
         await
-            db.collection("messages").doc(messages.id).set({
-                star: 1,
-            }, { merge: true }//←上書きされないおまじない
+            db.collection("messages").doc(messages.id).update({
+                star: (1),
+                // capital: true //←上書きされないおまじない
+            }, { merge: true }//←上書きされないおまじない merge: true }//←上書きされないおまじない
             )
-        console.log('srar:', messages.star)
+        console.log('star:', messages.star)
     };
 
     return (
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={2}>
-                <Grid item>
-                    <Avatar className={classes.pink}  >{messages.avater} </Avatar>
-                    {/* <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
-                </Grid>
+                {messages.avaterUrl === "0" &&
+                    <Grid item>
+                        <Avatar className={classes.pink}  >{messages.avater} </Avatar>
+                    </Grid>
+                }
+                {messages.avaterUrl !== "0" &&
+                    <Grid item>
+                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} />
+                    </Grid>
+                }
                 <Grid item xs>
                     <Typography variant="h6" component="h6">
                         {messages.name}
@@ -73,27 +80,8 @@ export default function SimplePaper({ messages }) {
                         {messages.message}
                     </Typography>
                 </Grid>
-                {/* <DeleteIcon color="action" onClick={deleteId} fontSize="large" /> */}
                 <StarBorderIcon className={classes.yellow} onClick={starId} />
             </Grid>
         </Paper>
     );
-    // return (
-    //     <Card className={classes.root}>
-    //         <CardContent>
-    //             <Typography >
-    //                 {/* <img src={messages.avater} alt="" style={{ borderRadius: '50%', width: '70px', height: '70px' }} /> */}
-    //             </Typography>
-    //             <Typography variant="h5" component="h5">
-    //                 {messages.name}
-    //             </Typography>
-    //             <Typography className={classes.pos} color="textSecondary">
-    //                 {messages.message}
-    //             </Typography>
-    //             {/* <Typography variant="body2" component="p">
-    //                 {messages.avater}
-    //             </Typography> */}
-    //         </CardContent>
-    //     </Card>
-    // );
 }

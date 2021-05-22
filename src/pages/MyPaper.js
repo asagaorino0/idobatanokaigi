@@ -46,7 +46,6 @@ export default function SimplePaper({ messages }) {
     const db = firebase.firestore();
     const doc = firebase.firestore();
     const deleteId = async () => {
-        console.log('messages:', doc.id)
         await
             db.collection("messages").doc(`${messages.id}`).delete()
     };
@@ -62,10 +61,19 @@ export default function SimplePaper({ messages }) {
 
     return (
         <Paper className={classes.paper}>
-            <Grid container wrap="nowrap" spacing={3}>
+            <Grid container wrap="nowrap" spacing={0}>
+                {messages.avaterUrl === "0" &&
+                    <Grid item>
+                        <Avatar className={classes.green}  >{messages.avater} </Avatar>
+                    </Grid>
+                }
+                {messages.avaterUrl !== "0" &&
+                    <Grid item>
+                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} />
+                    </Grid>
+                }
                 <Grid item>
-                    <Avatar className={classes.green}  >{messages.avater} </Avatar>
-                    {/* <DeleteIcon color="disabled" onClick={deleteId} /> */}
+                    <DeleteIcon color="disabled" onClick={deleteId} />
                 </Grid>
                 <Grid item xs>
                     <Typography variant="h6" component="h6">
