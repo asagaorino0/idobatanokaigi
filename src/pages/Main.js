@@ -12,7 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import { Store } from '../store/index'
-
+import Fab from '@material-ui/core/Fab';
+import NavigationIcon from '@material-ui/icons/Navigation';
 
 // import Paper from '@material-ui/core/Paper';
 // import { Store } from '../store/index';
@@ -126,7 +127,11 @@ const Main = () => {
 
     return (
         <div>
-            <button onClick={scrollToLatest}>goto</button>
+            {/* <button onClick={scrollToLatest}>goto</button> */}
+            <Fab variant="extended" onClick={scrollToLatest}>
+                <NavigationIcon className={classes.extendedIcon} />
+             Navigate
+            </Fab>
             <div className={classes.root}>
                 {messages.length !== 0 &&
                     messages.map((messages, index) => {

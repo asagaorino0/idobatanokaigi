@@ -7,13 +7,23 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Main from './pages/Main'
 import Login from './pages/Login'
 // import CreateUser from './pages/CreateUser'
+// import logo from './logo.svg';
+
 
 
 
 function App() {
+
   return (
     <Router>
-      {/* <Header /> */}
+      {/* <div className="App">
+        <img src="../img/0522.jpg" alt="" />
+hhhhhhh
+        <img src={logo} className="App-logo" alt="logo" />
+      </div>
+
+ */}
+
       <Switch>
         {/* <Route exact path='/' component={TopPage} />
         <Route exact path='/SecondPage/:name' component={SecondPage} /> */}
@@ -24,5 +34,7 @@ function App() {
       </Switch>
     </Router>
   );
+
+
 }
 export default App;
