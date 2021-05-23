@@ -9,6 +9,9 @@ import { NAME_GOOGLE, RESET_GOOGLE } from '../actions/index'
 import { Store } from '../store/index'
 import StarIcon from '@material-ui/icons/Star';
 import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import CssBaseline from '@material-ui/core/CssBaseline';
 // import styles from './Counter.module.css';
 
 // import { AVATER_URL } from '../actions/index'
@@ -18,37 +21,60 @@ const Login = () => {
     const [error] = useState('')
     const history = useHistory()
     const { globalState, setGlobalState } = useContext(Store)
-    const useStyles = makeStyles({
-        root: {
-            flexGrow: 1,
-            overflow: 'hidden',
-            padding: 'spacing(0, 3)',
-            backgroundColor: '#fff',
-        },
+    // const useStyles = makeStyles({
+    //     root: {
+    //         flexGrow: 1,
+    //         overflow: 'hidden',
+    //         padding: 'spacing(0, 3)',
+    //         backgroundColor: '#fff',
+    //     },
+    //     paper: {
+    //         maxWidth: 400,
+    //         margin: '5px 0px 5px 0px ',
+    //         padding: '16px',
+    //         boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+    //     },
+    //     pink: {
+    //         color: '#fff',
+    //         backgroundColor: 'pink',
+    //     },
+    //     green: {
+    //         color: '#fff',
+    //         backgroundColor: 'green',
+    //     },
+    //     red: {
+    //         color: 'red',
+    //         // backgroundColor: 'yelloW',
+    //     },
+    //     pos: {
+    //         marginBottom: 10,
+    //     },
+    // });
+
+
+    const useStyles = makeStyles((theme) => ({
         paper: {
-            maxWidth: 400,
-            margin: '5px 0px 5px 0px ',
-            padding: '16px',
-            boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+            marginTop: theme.spacing(8),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
         },
-        pink: {
-            color: '#fff',
-            backgroundColor: 'pink',
+        avatar: {
+            margin: theme.spacing(1),
+            backgroundColor: theme.palette.secondary.main,
         },
-        green: {
-            color: '#fff',
-            backgroundColor: 'green',
+        form: {
+            width: '100%', // Fix IE 11 issue.
+            marginTop: theme.spacing(1),
         },
-        red: {
-            color: 'red',
-            // backgroundColor: 'yelloW',
+        submit: {
+            margin: theme.spacing(3, 0, 2),
         },
-        pos: {
-            marginBottom: 10,
-        },
-    });
+    }));
+
     const classes = useStyles();
     const googleClick = () => {
+
         var provider = new firebase.auth.GoogleAuthProvider();
         // provider.addScope('https://www.googleapis.com/auth/admin.directory.customer.readonly');
         provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
@@ -97,9 +123,7 @@ const Login = () => {
     }
     return (
         <Container component="main" maxWidth="xs">
-            {/* <div style={{ display: 'flex', flexWrap: 'wrap' }} > */}
-            {/* <span className={classes.red} >★★★</span> */}
-            <h3 style={{ color: '#3e3e3e' }}>井戸端会議 for Web</h3>
+            {/* <h3 style={{ color: '#3e3e3e' }}>井戸端会議 for Web</h3>
             <TextField
                 required
                 name="name"
@@ -108,15 +132,72 @@ const Login = () => {
                 variant="outlined"
                 onChange={e => setName(e.target.value)}
             />
-            {/* <TextField id="password" label="password" value={password} onChange={e => setPassword(e.target.value)} /><br /> */}
             <br />
             {error}
             <Button variant="contained" onClick={handleClick} color="primary" disabled={name === ''}>Login</Button>
             {error}
             <Button variant="contained" onClick={googleClick} color="primary" >google</Button>
-            {error}
+            {error} */}
+
+            {/* <CssBaseline /> */}
+            <div className={classes.paper}>
+                {/* <span className={classes.red} >★★★</span> */}
+                <Typography component="h1" variant="h5">
+                    井戸端会議 for Web
+                </Typography>
+                <form className={classes.form} noValidate>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        name="name"
+                        label="ニックネーム"
+                        defaultValue=""
+                        autoComplete="email"
+                        autoFocus
+                        onChange={e => setName(e.target.value)}
+                    />
+
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        disabled={name === ''}
+                        onClick={handleClick}
+                    >
+                        Sign In
+                    </Button>
+                    <Grid container>
+
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            // disabled={name === ''}
+                            onClick={googleClick}
+                        >
+                            Google In
+                    </Button>
+                        {/* <Grid container> */}
+
+
+
+
+                    </Grid>
+                </form>
+            </div>
+            {/* <Box mt={8}>
+                <Copyright />
+            </Box> */}
         </Container>
     );
+
 };
 
 export default Login;
