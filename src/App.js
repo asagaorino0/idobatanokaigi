@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 // import Header from './components/Header'
 import Main from './pages/Main'
 import Login from './pages/Login'
+// import UserProfile from './pages/UserProfile'
 // import CreateUser from './pages/CreateUser'
 // import logo from './logo.svg';
 
@@ -28,6 +29,7 @@ hhhhhhh
         {/* <Route exact path='/' component={TopPage} />
         <Route exact path='/SecondPage/:name' component={SecondPage} /> */}
         <Route exact path='/Main/:name' component={Main} />
+        {/* <Route exact path='/UserProfile/:name' component={UserProfile} /> */}
         {/* <Route exact path='/Header/:nameH' component={Header} /> */}
         <Route exact path='/' component={Login} />
         {/* <Route exact path='/CreateUser/' component={CreateUser} /> */}

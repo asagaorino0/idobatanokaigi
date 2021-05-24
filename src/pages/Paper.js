@@ -5,11 +5,12 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import firebase from "firebase/app"
-import StarIcon from '@material-ui/icons/Star';
+// import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
-const useStyles = makeStyles({
-    //    const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         overflow: 'hidden',
@@ -32,12 +33,18 @@ const useStyles = makeStyles({
     },
     yellow: {
         color: 'yelloW',
-        // backgroundColor: 'yelloW',
     },
     pos: {
         marginBottom: 10,
     },
-});
+    largePink: {
+        width: theme.spacing(20),
+        height: theme.spacing(20),
+        fontSize: '100px',
+        color: '#fff',
+        backgroundColor: 'pink',
+    },
+}));
 
 export default function SimplePaper({ messages }) {
     const classes = useStyles();
@@ -58,18 +65,25 @@ export default function SimplePaper({ messages }) {
             )
         console.log('star:', messages.star)
     };
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     return (
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={2}>
                 {messages.avaterUrl === "0" &&
                     <Grid item>
-                        <Avatar className={classes.pink}  >{messages.avater} </Avatar>
+                        <Avatar className={classes.pink} onClick={handleClick} >{messages.avater} </Avatar>
                     </Grid>
                 }
                 {messages.avaterUrl !== "0" &&
                     <Grid item>
-                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} />
+                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} onClick={handleClick} />
                     </Grid>
                 }
                 <Grid item xs>
@@ -82,6 +96,27 @@ export default function SimplePaper({ messages }) {
                 </Grid>
                 <StarBorderIcon className={classes.yellow} onClick={starId} />
             </Grid>
+            <div>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    {messages.avaterUrl === "0" &&
+                        <MenuItem onClick={handleClose} >
+                            <Avatar className={classes.largePink}>{messages.avater} </Avatar>
+                        </MenuItem>
+                    }
+                    {messages.avaterUrl !== "0" &&
+                        <MenuItem onClick={handleClose}>
+                            <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '180px', height: '180px' }} />
+                        </MenuItem>
+                    }
+                    <MenuItem onClick={handleClose}>{messages.name}</MenuItem>
+                </Menu>
+            </div>
         </Paper>
     );
 }

@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-// import reducer from '../reducers/index';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
@@ -136,7 +135,7 @@ const Login = () => {
                         color="primary"
                     >
                         google in
-                            </Button>
+                    </Button>
                 </form>
             </div>
         </Container>

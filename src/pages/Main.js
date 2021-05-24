@@ -55,7 +55,7 @@ const Main = () => {
                     avaterUrl: globalState.avater,
                 })
                     .then((docref) => {
-                        console.log("Document successfully written!:", docref.id);
+                        // console.log("Document successfully written!:", docref.id);
                         setMessage("");
 
                         db.collection("messages").doc(docref.id).set({
@@ -83,7 +83,7 @@ const Main = () => {
             })
     }, []
     );
-    console.log('gs:', globalState.avater)
+    // console.log('gs:', globalState.avater)
     // console.log(messages)
 
     const messageEndRef = React.useRef();
@@ -193,8 +193,8 @@ const Main = () => {
                 </Grid>
             </div>
             <br />
-            <button onClick={handleDelete} color="secondary">{name}</button>
-            <button onClick={handleSet} color="secondary">set</button>
+            {/* <button onClick={handleDelete} color="secondary">{name}</button>
+            <button onClick={handleSet} color="secondary">set</button> */}
         </div>
     );
 };

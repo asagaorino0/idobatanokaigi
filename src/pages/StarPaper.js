@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Store } from '../store/index'
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
@@ -9,8 +10,12 @@ import firebase from "firebase/app"
 import StarIcon from '@material-ui/icons/Star';
 // import StarBorderIcon from '@material-ui/icons/StarBorder';
 import Badge from '@material-ui/core/Badge';
+// import { USER_PRO } from '../actions/index'
+// import { useHistory } from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
         overflow: 'hidden',
@@ -38,17 +43,26 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 10,
     },
-});
+    largePink: {
+        width: theme.spacing(20),
+        height: theme.spacing(20),
+        fontSize: '100px',
+        color: '#fff',
+        backgroundColor: 'pink',
+    },
+}));
 
 export default function SimplePaper({ messages }) {
+    // const { globalState, setGlobalState } = useContext(Store)
+    // const history = useHistory()
     const classes = useStyles();
     const db = firebase.firestore();
     const doc = firebase.firestore();
-    const deleteId = async () => {
-        console.log('messages:', doc.id)
-        await
-            db.collection("messages").doc(`${messages.id}`).delete()
-    };
+    // const deleteId = async () => {
+    //     console.log('messages:', doc.id)
+    //     await
+    //         db.collection("messages").doc(`${messages.id}`).delete()
+    // };
     const [count, setCount] = React.useState(1)
     const starId = async () => {
         const countS = messages.star
@@ -60,18 +74,46 @@ export default function SimplePaper({ messages }) {
             )
         console.log('strar:', messages.star)
     };
-
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    // const handleclick = async (event) => {
+    //     await
+    //         // db.collection("messages").doc(messages.id).set({
+    //         db.collection("messages").where("id", "==", messages.id)
+    //             .get()
+    //             .then((querySnapshot) => {
+    //                 querySnapshot.forEach((doc) => {
+    //                     console.log(doc.id, " => ", doc.data())
+    //                 })
+    //             })
+    //     // console.log('doc.name:', doc.name)
+    //     console.log('messages.name:', messages.name)
+    //     const name = (messages.name)
+    //     // history.push(`/UserProfile/${name}`)
+    //     setGlobalState({
+    //         type: USER_PRO,
+    //         name: messages.name,
+    //         avater: messages.avater,
+    //         avaterUrl: messages.avaterUrl,
+    //     })
+    //     console.log('globalState.name:', globalState.name)
+    // }
     return (
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={3}>
                 {messages.avaterUrl === "0" &&
                     <Grid item>
-                        <Avatar className={classes.pink}  >{messages.avater} </Avatar>
+                        <Avatar className={classes.pink} onClick={handleClick} >{messages.avater} </Avatar>
                     </Grid>
                 }
                 {messages.avaterUrl !== "0" &&
                     <Grid item>
-                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} />
+                        <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '40px', height: '40px' }} onClick={handleClick} />
                     </Grid>
                 }
                 <Grid item xs>
@@ -85,6 +127,27 @@ export default function SimplePaper({ messages }) {
                 <StarIcon className={classes.yellow} onClick={starId} />
                 <Badge badgeContent={messages.star} />
             </Grid>
+            <div>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    {messages.avaterUrl === "0" &&
+                        <MenuItem onClick={handleClose} >
+                            <Avatar className={classes.largePink}>{messages.avater} </Avatar>
+                        </MenuItem>
+                    }
+                    {messages.avaterUrl !== "0" &&
+                        <MenuItem onClick={handleClose}>
+                            <img src={messages.avaterUrl} alt="" style={{ borderRadius: '50%', width: '180px', height: '180px' }} />
+                        </MenuItem>
+                    }
+                    <MenuItem onClick={handleClose}>{messages.name}</MenuItem>
+                </Menu>
+            </div>
         </Paper>
     );
 }
