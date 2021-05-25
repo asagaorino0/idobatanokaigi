@@ -33,7 +33,7 @@ const useStyles = makeStyles({
     },
     yellow: {
         // color: 'yelloW',
-        color: '#fff',
+        color: 'red',
         backgroundColor: 'yelloW',
     },
     pos: {
@@ -82,6 +82,9 @@ export default function SimplePaper({ messages }) {
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
                         {messages.message}
+                    </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                        {messages.time}
                     </Typography>
                 </Grid>
                 <StarIcon className={classes.yellow} />

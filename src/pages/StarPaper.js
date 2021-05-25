@@ -81,28 +81,7 @@ export default function SimplePaper({ messages }) {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    // const handleclick = async (event) => {
-    //     await
-    //         // db.collection("messages").doc(messages.id).set({
-    //         db.collection("messages").where("id", "==", messages.id)
-    //             .get()
-    //             .then((querySnapshot) => {
-    //                 querySnapshot.forEach((doc) => {
-    //                     console.log(doc.id, " => ", doc.data())
-    //                 })
-    //             })
-    //     // console.log('doc.name:', doc.name)
-    //     console.log('messages.name:', messages.name)
-    //     const name = (messages.name)
-    //     // history.push(`/UserProfile/${name}`)
-    //     setGlobalState({
-    //         type: USER_PRO,
-    //         name: messages.name,
-    //         avater: messages.avater,
-    //         avaterUrl: messages.avaterUrl,
-    //     })
-    //     console.log('globalState.name:', globalState.name)
-    // }
+
     return (
         <Paper className={classes.paper}>
             <Grid container wrap="nowrap" spacing={3}>
@@ -122,6 +101,9 @@ export default function SimplePaper({ messages }) {
                     </Typography>
                     <Typography className={classes.pos} color="textSecondary">
                         {messages.message}
+                    </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                        {messages.time}
                     </Typography>
                 </Grid>
                 <StarIcon className={classes.yellow} onClick={starId} />

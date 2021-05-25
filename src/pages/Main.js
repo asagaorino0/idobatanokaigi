@@ -43,6 +43,15 @@ const Main = () => {
     const doc = firebase.firestore();
     const { name } = useParams();
     const avater = name.charAt(0);
+    const date = new Date()
+    const Y = date.getFullYear()
+    const M = ("00" + (date.getMonth() + 1)).slice(-2)
+    const D = ("00" + date.getDate()).slice(-2)
+    const h = ("00" + date.getHours()).slice(-2)
+    const m = ("00" + date.getMinutes()).slice(-2)
+    const s = ("00" + date.getSeconds()).slice(-2)
+    const no = Y + '年' + M + '月' + D + '日 ' + h + ':' + m
+
     const handleCreate = async (e) => {
         if (e.key === 'Enter') {
             await
@@ -53,11 +62,11 @@ const Main = () => {
                     avater,
                     star: 0,
                     avaterUrl: globalState.avater,
+                    time: no
                 })
                     .then((docref) => {
                         // console.log("Document successfully written!:", docref.id);
                         setMessage("");
-
                         db.collection("messages").doc(docref.id).set({
                             id: docref.id,
                             // capital: true //←上書きされないおまじない
@@ -77,14 +86,16 @@ const Main = () => {
             .orderBy("timestamp")
             .onSnapshot((snapshot) => {
                 const messages = snapshot.docs.map((doc) => {
-                    return doc.id && doc.data()
+                    return doc.id &&
+                        doc.data()
+                    // doc.data().timestamp.toDate()
                 });
                 setMessages(messages);
             })
     }, []
     );
     // console.log('gs:', globalState.avater)
-    // console.log(messages)
+    console.log(messages)
 
     const messageEndRef = React.useRef();
     const scrollToLatest = () =>

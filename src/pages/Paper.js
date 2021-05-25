@@ -93,6 +93,9 @@ export default function SimplePaper({ messages }) {
                     <Typography className={classes.pos} color="textSecondary">
                         {messages.message}
                     </Typography>
+                    <Typography variant="caption" color="textSecondary">
+                        {messages.time}
+                    </Typography>
                 </Grid>
                 <StarBorderIcon className={classes.yellow} onClick={starId} />
             </Grid>
