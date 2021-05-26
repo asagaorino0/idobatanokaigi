@@ -10,7 +10,7 @@ import StarIcon from '@material-ui/icons/Star';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import logo from '../img/0730.jpg';
+import logo from '../img/0527.jpg';
 import CssBaseline from '@material-ui/core/CssBaseline';
 // import logo from './img';
 // import styles from './Counter.module.css';

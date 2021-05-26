@@ -15,13 +15,11 @@ import { Store } from '../store/index'
 import Fab from '@material-ui/core/Fab';
 import NavigationIcon from '@material-ui/icons/Navigation';
 
-// import Paper from '@material-ui/core/Paper';
-// import { Store } from '../store/index';
-// import gravatar from './gravatar';
-// import Typography from '@material-ui/core/Typography';
-// import DeleteIcon from '@material-ui/icons/Delete';
-// import StarIcon from '@material-ui/icons/Star';
-// import StarBorderIcon from '@material-ui/icons/StarBorder';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const Main = () => {
     // const useStyles = makeStyles((theme) => ({
@@ -35,10 +33,22 @@ const Main = () => {
             backgroundColor: 'green',
             margin: '5px 5px 5px 20px',
         },
+        yellow: {
+            color: 'yelloW',
+            // backgroundColor: 'yelloW',
+        },
+        formControl: {
+            margin: 'spacing(1)',
+            minWidth: '120px',
+        },
+        selectEmpty: {
+            marginTop: 'spacing(2)',
+        },
     });
     const { globalState, setGlobalState } = useContext(Store)
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState('');
+    const [names, setNames] = useState('');
     const db = firebase.firestore();
     const doc = firebase.firestore();
     const { name } = useParams();
@@ -94,15 +104,11 @@ const Main = () => {
             })
     }, []
     );
-    // console.log('gs:', globalState.avater)
-    console.log(messages)
+    // console.log(messages)
 
     const messageEndRef = React.useRef();
     const scrollToLatest = () =>
         messageEndRef.current.scrollIntoView({ behavior: "auto", block: "start", inline: "center" })
-    const sterId = async () => {
-        console.log('messages:', doc.id)
-    };
     const handleDelete = async () => {
         await
             db.collection("messages").where("name", "==", name)
@@ -113,26 +119,53 @@ const Main = () => {
                     })
                 })
     };
-    const handleSet = async () => {
-        await
-            db.collection("messages").where("message", "==", "どんまい")
-                .get()
-                .then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        doc.ref.set({
-                            star: 0,
-                            avaterUrl: "0",
-                        }, { merge: true }//←上書きされないおまじない
-                        )
-                            .then(() => {
-                                console.log("Document successfully written!");
-                            })
-                            .catch((error) => {
-                                console.error("Error writing document: ", error);
-                            });
-                    })
+    const handleReset = async () => {
+        // (() => {
+        messageEndRef.current.scrollIntoView({ behavior: "auto", block: "start", inline: "center" })
+        firebase
+            .firestore()
+            .collection("messages")
+            .orderBy("timestamp")
+            .onSnapshot((snapshot) => {
+                const messages = snapshot.docs.map((doc) => {
+                    return doc.id &&
+                        doc.data()
+                    // doc.data().timestamp.toDate()
+                });
+                setMessages(messages);
+            })
+
+    };
+    const handleChoice = async (event) => {
+        // = (event) => {
+        setNames(event.target.value);
+        console.log(names)
+        await db.collection("messages").where("name", "==", `${names}`)
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    console.log(doc.id, " => ", doc.data())
                 })
+            })
+            .catch((error) => {
+                console.log("Error getting documents: ", error);
+            })
     }
+    const starChoice = async () => {
+        await db.collection("messages")
+            .orderBy("star")
+            .onSnapshot((snapshot) => {
+                const messages = snapshot.docs
+                    .filter((doc) => doc.data().star > 0)
+                    .map((doc) => {
+                        return doc.id &&
+                            doc.data()
+                    });
+                setMessages(messages);
+            })
+        console.log(messages)
+    }
+
     const classes = useStyles();
     const ref = useRef<HTMLDivElement>(null);
 
@@ -143,6 +176,7 @@ const Main = () => {
                 <NavigationIcon className={classes.extendedIcon} />
              Navigate
             </Fab>
+
             <div className={classes.root}>
                 {messages.length !== 0 &&
                     messages.map((messages, index) => {
@@ -170,20 +204,6 @@ const Main = () => {
                 }
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap' }} />
-            {/* <Avatar className={classes.green} >{avater}</Avatar>
-                <TextField
-                    // required
-                    id="standard-basic"
-                    label="message!"
-                    defaultValue=""
-                    fullWidth={true}
-                    ref={messageEndRef}
-                    onChange={e => setMessage(e.target.value)}
-                    onKeyDown={handleCreate}
-                    autoFocus={true}
-                    value={message}
-                />
-            </div> */}
             <div className={classes.root}>
                 {globalState.avater === '0' &&
                     <Avatar className={classes.green} >{avater}</Avatar>}
@@ -203,9 +223,44 @@ const Main = () => {
                     />
                 </Grid>
             </div>
-            <br />
-            {/* <button onClick={handleDelete} color="secondary">{name}</button>
-            <button onClick={handleSet} color="secondary">set</button> */}
+            <div style={{ display: 'flex', flexWrap: 'wrap' }} />
+            <div className={classes.root} />
+            <Avatar className={classes.yellow} onClick={starChoice} >★</Avatar>
+            <button onClick={handleReset} color="secondary">reset</button>
+            <button onClick={handleChoice} color="secondary">set</button>
+
+            <FormControl required className={classes.formControl}>
+                <InputLabel id="demo-simple-select-required-label">Lock On</InputLabel>
+                <Select
+                    labelId="demo-simple-select-required-label"
+                    id="demo-simple-select-required"
+                    value={names}
+                    // onChange={(e) => setNames(e.target.value)}
+                    // onKeyDown={handleChoice}
+                    onChange={handleChoice}
+                    className={classes.selectEmpty}
+                >
+                    {messages.length !== 0 &&
+                        messages.map((messages, index) => {
+                            return (
+                                <MenuItem value={messages.name} key={index}>
+                                    {messages.name}
+                                </MenuItem>
+                                // <MenuItem value={10}>Ten</MenuItem>
+                                // <MenuItem value={20}>Twenty</MenuItem>
+                                // <MenuItem value={30}>Thirty</MenuItem>
+                            )
+                        })}
+                </Select>
+                {/* <FormHelperText>Required</FormHelperText> */}
+            </FormControl>
+
+
+
+
+
+
+
         </div>
     );
 };
